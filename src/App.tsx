@@ -16,7 +16,7 @@ const App: FC = () => {
         <div>
             <div>
                 {Object.values(Pages).map(name => (
-                    <button onClick={() => setPageShown(name)}>
+                    <button key={name} onClick={() => setPageShown(name)}>
                         {name[0].toLocaleUpperCase() + name.slice(1)}
                     </button>
                 ))}
