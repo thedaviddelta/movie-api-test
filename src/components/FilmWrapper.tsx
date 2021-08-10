@@ -1,5 +1,5 @@
 import { FC } from "react";
-import useFilmInfo from "../hooks/useFilmInfo";
+import useFilmInfo, { LoadingState } from "../hooks/useFilmInfo";
 import FilmView from "./FilmView";
 
 type Props = {
@@ -7,17 +7,14 @@ type Props = {
 };
 
 const FilmWrapper: FC<Props> = ({ id }) => {
-    const { title, poster, error, ...rest } = useFilmInfo(id);
+    const state = useFilmInfo(id);
 
-    if (error)
-        return <div>Unexpected error: {error}</div>;
-
-    return (
-        <FilmView
-            title={title}
-            poster={poster}
-            {...rest}
-        />
+    return state.loading === LoadingState.PENDING ? (
+        <div>Loading...</div>
+    ) : state.loading === LoadingState.ERROR ? (
+        <div>Unexpected error: {state.error}</div>
+    ) : (
+        <FilmView {...state.film} />
     );
 };
 

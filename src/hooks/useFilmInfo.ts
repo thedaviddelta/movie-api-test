@@ -1,20 +1,24 @@
 import { useEffect, useReducer } from "react";
-import reducer, { ActionType, initialState } from "../reducers/film";
+import reducer, { ActionType, initialState, LoadingState } from "../reducers/film";
+import { ApiResponseId, ApiResponseError } from "../model/ApiResponse";
 
 const useFilmInfo = (id: string) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
+        dispatch({ type: ActionType.LOADING });
+
         fetch(`https://www.omdbapi.com/?apikey=${process.env.REACT_APP_API_KEY}&i=${id}`)
             .then(res => {
                 if (!res.ok)
                     throw new Error(`${res.status} - ${res.statusText}`);
                 return res.json();
-            }).then(json => {
-                const { Response, Title, Poster, Year, Runtime, Director, Error } = json;
-                if (Response !== "True")
-                    return dispatch({ type: ActionType.ERROR, payload: { error: Error } });
-                dispatch({ type: ActionType.SET, payload: { Title, Poster, Year, Runtime, Director } });
+            }).then((json: ApiResponseId | ApiResponseError) => {
+                if (json.Response !== "True")
+                    return dispatch({ type: ActionType.ERROR, payload: { error: json.Error } });
+
+                const { Title, Poster, Year, Runtime, Director } = json;
+                dispatch({ type: ActionType.SET, payload: { film: { Title, Poster, Year, Runtime, Director } } });
             }).catch(err => {
                 dispatch({ type: ActionType.ERROR, payload: { error: err.message } });
             });
@@ -24,3 +28,5 @@ const useFilmInfo = (id: string) => {
 };
 
 export default useFilmInfo;
+
+export { LoadingState };

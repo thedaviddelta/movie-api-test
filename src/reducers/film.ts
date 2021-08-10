@@ -1,46 +1,59 @@
+import Film from "../model/Film";
+import { ApiResponseId } from "../model/ApiResponse";
+
+export enum LoadingState {
+    PENDING,
+    SUCCESS,
+    ERROR
+}
+
 type State = {
-    title: string,
-    poster: string,
-    year: string,
-    runtime: string,
-    director: string,
-    error?: string
+    loading: LoadingState.PENDING
+} | {
+    loading: LoadingState.SUCCESS,
+    film: Film
+} | {
+    loading: LoadingState.ERROR,
+    error: string
 };
 
 export const initialState: State = {
-    title: "",
-    poster: "",
-    year: "",
-    runtime: "",
-    director: ""
+    loading: LoadingState.PENDING
 };
 
 export enum ActionType {
     SET,
-    ERROR
+    ERROR,
+    LOADING
 }
 
 type Action = {
     type: ActionType.SET,
     payload: {
-        [key in Exclude<Capitalize<keyof State>, "Error">]: string
+        film: {
+            [key in Exclude<keyof ApiResponseId, "Response">]: ApiResponseId[key]
+        }
     }
 } | {
     type: ActionType.ERROR,
     payload: {
         error: string
     }
+} | {
+    type: ActionType.LOADING
 };
 
 export default function reducer(state: State, action: Action): State {
     switch (action.type) {
         case ActionType.SET:
-            const payloadEntries = Object.entries(action.payload);
-            const mappedEntries = payloadEntries.map(([key, value]) => [key.toLocaleLowerCase(), value]);
-            const newState = Object.fromEntries(mappedEntries);
-            return { ...state, ...newState };
+            const filmEntries = Object.entries(action.payload.film);
+            const mappedEntries = filmEntries.map(([key, value]) => [key.toLocaleLowerCase(), value]);
+            const newFilm = Object.fromEntries(mappedEntries);
+            return { ...state, film: newFilm, loading: LoadingState.SUCCESS };
         case ActionType.ERROR:
-            return { ...state, error: action.payload.error };
+            return { ...state, error: action.payload.error, loading: LoadingState.ERROR };
+        case ActionType.LOADING:
+            return { ...state, loading: LoadingState.PENDING };
         default:
             return state;
     }
