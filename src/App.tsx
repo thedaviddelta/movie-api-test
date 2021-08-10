@@ -1,12 +1,11 @@
-import React from 'react';
+import { FC } from 'react';
 import './App.scss';
+import Top from "./components/Top";
 
-function App() {
-    return (
-        <div>
-            Hello world
-        </div>
-    );
-}
+const App: FC = () => (
+    <div>
+        <Top />
+    </div>
+);
 
 export default App;
