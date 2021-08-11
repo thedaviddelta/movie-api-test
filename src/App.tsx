@@ -17,11 +17,16 @@ const App: FC = () => {
         <div>
             <Header>
                 {Object.values(Pages).map(name => (
-                    <button key={name} onClick={() => setPageShown(name)} className={name === pageShown ? "currentPage" : ""}>
+                    <button
+                        key={name}
+                        onClick={() => setPageShown(name)}
+                        className={name === pageShown ? "currentPage" : ""}
+                    >
                         {name[0].toLocaleUpperCase() + name.slice(1)}
                     </button>
                 ))}
             </Header>
+
             <main>
                 {pageShown === Pages.TOP ? (
                     <Top />
@@ -29,6 +34,7 @@ const App: FC = () => {
                     <Search />
                 )}
             </main>
+
             <Footer />
         </div>
     );

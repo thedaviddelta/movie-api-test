@@ -1,3 +1,6 @@
+$layoutBg: $green-300;
+$layoutShadow: 0 0 0.5rem $green-800;
+
 header {
   position: sticky;
   left: 0;
@@ -6,7 +9,8 @@ header {
   z-index: 9;
   width: 100%;
   padding: 0.75rem 3rem;
-  background: $green-300;
+  background: $layoutBg;
+  box-shadow: $layoutShadow;
 
   @include mobile {
     padding: 0.75rem 1.25rem;
@@ -91,5 +95,22 @@ header {
         }
       }
     }
+  }
+}
+
+footer {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  background: $layoutBg;
+  box-shadow: $layoutShadow;
+
+  @include mobile {
+    font-size: 0.9rem;
+  }
+
+  > span {
+    margin: 0 0.5rem;
   }
 }

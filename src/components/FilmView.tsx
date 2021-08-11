@@ -8,7 +8,9 @@ const FilmView: FC<Film> = ({ title, poster, children, ...props }) => (
             <h3>{title}</h3>
             {Object.entries(props).map(([key, value]) => (
                 key !== "imdbid" && (
-                    <p key={key}>{value}</p>
+                    <p key={key}>
+                        {value}
+                    </p>
                 )
             ))}
         </div>

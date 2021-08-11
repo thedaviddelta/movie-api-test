@@ -3,8 +3,7 @@ export type ApiResponseError = {
     Error: string
 };
 
-export type ApiResponseId = {
-    Response: "True",
+export type ApiResponseIdItem = {
     Title: string,
     Poster: string,
     Year: string,
@@ -12,12 +11,18 @@ export type ApiResponseId = {
     Director: string
 };
 
+export type ApiResponseId = {
+    Response: "True"
+} & ApiResponseIdItem;
+
+export type ApiResponseSearchItem = {
+    imdbID: string,
+    Title: string,
+    Poster: string,
+    Year: string
+};
+
 export type ApiResponseSearch = {
     Response: "True",
-    Search: {
-        imdbID: string,
-        Title: string,
-        Poster: string,
-        Year: string
-    }[]
+    Search: ApiResponseSearchItem[]
 };

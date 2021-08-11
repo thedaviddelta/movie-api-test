@@ -11,7 +11,11 @@ const Header: FC = ({ children }) => (
             {children}
         </div>
         <div>
-            <a href="https://github.com/TheDavidDelta/movie-api-test" target="_blank" rel="noopener noreferrer nofollow">
+            <a
+                href="https://github.com/TheDavidDelta/movie-api-test"
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+            >
                 <img src={github} alt="GitHub" />
             </a>
         </div>

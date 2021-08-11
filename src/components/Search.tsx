@@ -1,49 +1,9 @@
-import { useEffect, useReducer, FC, ChangeEvent } from "react";
-import reducer, { ActionType, initialState, SearchType, LoadingState } from "../reducers/search";
+import { FC } from "react";
+import useListSearch , { SearchType, LoadingState } from "../hooks/useListSearch";
 import FilmView from "./FilmView";
-import { ApiResponseSearch, ApiResponseError } from "../model/ApiResponse";
 
 const Search: FC = () => {
-    const [state, dispatch] = useReducer(reducer, initialState);
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        dispatch({
-            type: ActionType.SET_FIELD,
-            payload: {
-                key: e.target.id,
-                value: e.target.value
-            }
-        });
-    };
-
-    useEffect(() => {
-        const timeout = setTimeout(() => (
-            dispatch({ type: ActionType.SET_FIELD, payload: { key: "delayedQuery", value: state.query } })
-        ), 1000);
-        return () => clearTimeout(timeout);
-    }, [state.query]);
-
-    useEffect(() => {
-        if (!state.delayedQuery)
-            return dispatch({ type: ActionType.EMPTY });
-
-        dispatch({ type: ActionType.LOADING });
-
-        fetch(`https://www.omdbapi.com/?apikey=${process.env.REACT_APP_API_KEY}&s=${state.delayedQuery}&type=${state.type}`)
-            .then(res => {
-                if (!res.ok)
-                    throw new Error(`${res.status} - ${res.statusText}`);
-                return res.json();
-            }).then((json: ApiResponseSearch | ApiResponseError) => {
-                if (json.Response !== "True")
-                    return dispatch({ type: ActionType.ERROR, payload: { error: json.Error } });
-
-                const result = json.Search.map(({ imdbID, Title, Poster, Year }) => ({ imdbID, Title, Poster, Year }));
-                dispatch({ type: ActionType.RESULT, payload: { result } });
-            }).catch(err => {
-                dispatch({ type: ActionType.ERROR, payload: { error: err.message } });
-            });
-    }, [state.delayedQuery, state.type]);
+    const { state, handleFieldChange } = useListSearch();
 
     return (
         <>
@@ -54,13 +14,13 @@ const Search: FC = () => {
                     aria-label="Query"
                     placeholder="Search..."
                     value={state.query}
-                    onChange={handleChange}
+                    onChange={handleFieldChange}
                 />
                 <select
                     id="type"
                     aria-label="Type"
                     value={state.type}
-                    onChange={handleChange}
+                    onChange={handleFieldChange}
                 >
                     {Object.values(SearchType).map(type => (
                         <option key={type} value={type}>
@@ -71,11 +31,17 @@ const Search: FC = () => {
             </div>
 
             {state.loading === LoadingState.IDLE ? (
-                <div className="searchMsg">There's nothing here</div>
+                <div className="searchMsg">
+                    There's nothing here
+                </div>
             ) : state.loading === LoadingState.PENDING ? (
-                <div className="searchMsg">Loading...</div>
+                <div className="searchMsg">
+                    Loading...
+                </div>
             ) : state.loading === LoadingState.ERROR ? (
-                <div className="searchMsg error">Unexpected error: {state.error}</div>
+                <div className="searchMsg error">
+                    Unexpected error: {state.error}
+                </div>
             ) : (
                 <div className="filmList">
                     {state.result.map(film => (

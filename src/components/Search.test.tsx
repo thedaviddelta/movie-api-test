@@ -16,6 +16,7 @@ it("is empty on page load", () => {
     expect(typeSelect).toBeInTheDocument();
 
     expect(screen.queryByRole("img", { name: /poster/i })).not.toBeInTheDocument();
+    expect(screen.getByText(/there's nothing here/i)).toBeInTheDocument();
 });
 
 it("loads 1 second after typing", async () => {
@@ -24,11 +25,11 @@ it("loads 1 second after typing", async () => {
     const { searchInput } = getForm();
     userEvent.type(searchInput, "inception");
 
-    const falsePoster = screen.queryByRole("img", { name: /poster/i }, { timeout: 0 });
-    expect(falsePoster).not.toBeInTheDocument();
+    expect(screen.getByText(/there's nothing here/i)).toBeInTheDocument();
 
     const posters = await screen.findAllByRole("img", { name: /poster/i }, { timeout: 1500 });
     posters.forEach(poster => expect(poster).toBeInTheDocument());
+    expect(screen.queryByText(/there's nothing here/i)).not.toBeInTheDocument();
 });
 
 it("empties the page after deleting query", async () => {
@@ -42,6 +43,7 @@ it("empties the page after deleting query", async () => {
 
     userEvent.clear(searchInput);
     await waitForElementToBeRemoved(posters, { timeout: 1500 });
+    expect(screen.getByText(/there's nothing here/i)).toBeInTheDocument();
 });
 
 it("doesn't load if changing type on empty query", async () => {
@@ -51,4 +53,5 @@ it("doesn't load if changing type on empty query", async () => {
     userEvent.type(typeSelect, "series");
 
     expect(screen.queryByRole("img", { name: /poster/i })).not.toBeInTheDocument();
+    expect(screen.getByText(/there's nothing here/i)).toBeInTheDocument();
 });

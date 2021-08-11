@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from "react";
 import reducer, { ActionType, initialState, LoadingState } from "../reducers/film";
+import { fetchStatusErrorHandler } from "../utils/fetch";
 import { ApiResponseId, ApiResponseError } from "../model/ApiResponse";
 
 const useFilmInfo = (id: string) => {
@@ -9,11 +10,8 @@ const useFilmInfo = (id: string) => {
         dispatch({ type: ActionType.LOADING });
 
         fetch(`https://www.omdbapi.com/?apikey=${process.env.REACT_APP_API_KEY}&i=${id}`)
-            .then(res => {
-                if (!res.ok)
-                    throw new Error(`${res.status} - ${res.statusText}`);
-                return res.json();
-            }).then((json: ApiResponseId | ApiResponseError) => {
+            .then(fetchStatusErrorHandler)
+            .then((json: ApiResponseId | ApiResponseError) => {
                 if (json.Response !== "True")
                     return dispatch({ type: ActionType.ERROR, payload: { error: json.Error } });
 

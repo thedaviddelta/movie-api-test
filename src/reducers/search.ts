@@ -1,5 +1,6 @@
+import { parseFilmKeys } from "../utils/film";
 import Film from "../model/Film";
-import { ApiResponseSearch } from "../model/ApiResponse";
+import { ApiResponseSearchItem } from "../model/ApiResponse";
 
 export const SearchType = {
     MOVIE: "movie",
@@ -57,7 +58,7 @@ type Action = {
 } | {
     type: ActionType.RESULT,
     payload: {
-        result: ApiResponseSearch["Search"]
+        result: ApiResponseSearchItem[]
     }
 } | {
     type: ActionType.ERROR,
@@ -76,14 +77,9 @@ export default function reducer(state: State, action: Action): State {
             const { key, value } = action.payload;
             return { ...state, [key]: value };
         case ActionType.RESULT:
-            const newResult = action.payload.result.map(film => {
-                const filmEntries = Object.entries(film);
-                const mappedEntries = filmEntries.map(([key, value]) => [key.toLocaleLowerCase(), value]);
-                return Object.fromEntries(mappedEntries);
-            });
-            return { ...state, result: newResult, loading: LoadingState.SUCCESS };
+            return { ...state, loading: LoadingState.SUCCESS, result: action.payload.result.map(parseFilmKeys) };
         case ActionType.ERROR:
-            return { ...state, error: action.payload.error, loading: LoadingState.ERROR };
+            return { ...state, loading: LoadingState.ERROR, error: action.payload.error };
         case ActionType.LOADING:
             return { ...state, loading: LoadingState.PENDING };
         case ActionType.EMPTY:
