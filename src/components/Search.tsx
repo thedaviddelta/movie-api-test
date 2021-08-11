@@ -46,7 +46,7 @@ const Search: FC = () => {
     }, [state.delayedQuery, state.type]);
 
     return (
-        <div>
+        <>
             <div className="searchForm">
                 <input
                     type="text"
@@ -70,18 +70,20 @@ const Search: FC = () => {
                 </select>
             </div>
 
-            {state.loading === LoadingState.PENDING ? (
-                <div>Loading...</div>
+            {state.loading === LoadingState.IDLE ? (
+                <div className="searchMsg">There's nothing here</div>
+            ) : state.loading === LoadingState.PENDING ? (
+                <div className="searchMsg">Loading...</div>
             ) : state.loading === LoadingState.ERROR ? (
-                <div>Unexpected error {state.error}</div>
-            ) : state.loading === LoadingState.SUCCESS ? (
+                <div className="searchMsg error">Unexpected error: {state.error}</div>
+            ) : (
                 <div className="filmList">
                     {state.result.map(film => (
                         <FilmView key={film?.imdbid ?? film.title} {...film} />
                     ))}
                 </div>
-            ) : null}
-        </div>
+            )}
+        </>
     );
 };
 

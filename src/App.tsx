@@ -1,5 +1,6 @@
 import { useState, FC } from 'react';
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Top from "./components/Top";
 import Search from "./components/Search";
 
@@ -28,6 +29,7 @@ const App: FC = () => {
                     <Search />
                 )}
             </main>
+            <Footer />
         </div>
     );
 };

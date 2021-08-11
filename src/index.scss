@@ -1,6 +1,9 @@
 // node-sass doesn't support '@use'
 @import "styles/colors";
+@import "styles/media";
+@import "styles/animations";
 @import "styles/global";
 @import "styles/header";
 @import "styles/main";
 @import "styles/film";
+@import "styles/footer";

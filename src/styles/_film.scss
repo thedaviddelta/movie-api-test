@@ -2,7 +2,7 @@
   width: 12rem;
   height: auto;
 
-  // avoid size expansion on flex
+  // avoid size expansion on flex siblings
   > div {
     $borderRadius: 0.75rem;
     border-radius: $borderRadius;
