@@ -14,7 +14,7 @@ const filmIds = [
 ];
 
 const Top: FC = () => (
-    <div>
+    <div className="filmList">
         {filmIds.map(id => (
             <FilmWrapper key={id} id={id} />
         ))}

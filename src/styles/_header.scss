@@ -1,0 +1,74 @@
+header {
+  position: sticky;
+  left: 0;
+  top: 0;
+  display: flex;
+  width: 100%;
+  padding: 0.75rem 3rem;
+  background: $green-300;
+
+  div {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:nth-child(1) {
+      justify-content: flex-start;
+    }
+
+    &:nth-last-child(1) {
+      justify-content: flex-end;
+    }
+
+    > img {
+      width: auto;
+      height: 4rem;
+    }
+
+    button, a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      height: auto;
+      min-width: 2.5rem;
+      min-height: 2.5rem;
+      background-color: $green-300;
+      border-width: 0;
+      border-color: $green-600;
+      border-style: solid;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $green-200;
+      }
+      &:active {
+        background-color: $green-150;
+      }
+    }
+
+    a {
+      padding: 0.3rem;
+      border-width: 0.175rem;
+      border-radius: 0.5rem;
+
+      > img {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+
+    &.pageButtons > button {
+      border-bottom-width: 0.2rem;
+      font-size: 1rem;
+      line-height: 1.2;
+      white-space: nowrap;
+      padding-inline: 1rem;
+
+      &.currentPage {
+        background-color: $green-250;
+      }
+    }
+  }
+}

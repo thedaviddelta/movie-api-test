@@ -1,15 +1,18 @@
 import { FC } from "react";
+import logo from "../img/logo.svg";
 import Film from "../model/Film";
 
 const FilmView: FC<Film> = ({ title, poster, children, ...props }) => (
-    <div>
-        <img src={poster} alt={`'${title}' poster`} />
-        <h3>{title}</h3>
-        {Object.entries(props).map(([key, value]) => (
-            key !== "imdbid" && (
-                <p key={key}>{value}</p>
-            )
-        ))}
+    <div className="filmView">
+        <div>
+            <img src={poster ?? logo} alt={`'${title}' poster`} />
+            <h3>{title}</h3>
+            {Object.entries(props).map(([key, value]) => (
+                key !== "imdbid" && (
+                    <p key={key}>{value}</p>
+                )
+            ))}
+        </div>
     </div>
 );
 

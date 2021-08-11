@@ -1,5 +1,5 @@
 import { useState, FC } from 'react';
-import './App.scss';
+import Header from "./components/Header";
 import Top from "./components/Top";
 import Search from "./components/Search";
 
@@ -14,20 +14,20 @@ const App: FC = () => {
 
     return (
         <div>
-            <div>
+            <Header>
                 {Object.values(Pages).map(name => (
-                    <button key={name} onClick={() => setPageShown(name)}>
+                    <button key={name} onClick={() => setPageShown(name)} className={name === pageShown ? "currentPage" : ""}>
                         {name[0].toLocaleUpperCase() + name.slice(1)}
                     </button>
                 ))}
-            </div>
-            <div>
+            </Header>
+            <main>
                 {pageShown === Pages.TOP ? (
                     <Top />
                 ) : (
                     <Search />
                 )}
-            </div>
+            </main>
         </div>
     );
 };

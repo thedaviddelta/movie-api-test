@@ -1,0 +1,37 @@
+.filmView {
+  width: 12rem;
+  height: auto;
+
+  // avoid size expansion on flex
+  > div {
+    $borderRadius: 0.75rem;
+    border-radius: $borderRadius;
+    background: $green-400;
+
+    > img {
+      width: 100%;
+      border-top-left-radius: $borderRadius;
+      border-top-right-radius: $borderRadius;
+    }
+
+    > h3 {
+      margin: 0;
+      padding: 0.75rem 0.5rem;
+      text-align: center;
+    }
+
+    > p {
+      margin: 0;
+      padding: 0.5rem 0.5rem;
+
+      &:nth-child(odd) {
+        background: $green-500;
+      }
+
+      &:nth-last-child(1) {
+        border-bottom-left-radius: $borderRadius;
+        border-bottom-right-radius: $borderRadius;
+      }
+    }
+  }
+}

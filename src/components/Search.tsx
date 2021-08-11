@@ -47,7 +47,7 @@ const Search: FC = () => {
 
     return (
         <div>
-            <div>
+            <div className="searchForm">
                 <input
                     type="text"
                     id="query"
@@ -75,9 +75,11 @@ const Search: FC = () => {
             ) : state.loading === LoadingState.ERROR ? (
                 <div>Unexpected error {state.error}</div>
             ) : state.loading === LoadingState.SUCCESS ? (
-                state.result.map(film => (
-                    <FilmView key={film?.imdbid ?? film.title} {...film} />
-                ))
+                <div className="filmList">
+                    {state.result.map(film => (
+                        <FilmView key={film?.imdbid ?? film.title} {...film} />
+                    ))}
+                </div>
             ) : null}
         </div>
     );
